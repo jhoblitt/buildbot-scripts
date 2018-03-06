@@ -76,6 +76,15 @@ case $(uname -s) in
       # gfortran is part of the gcc bottle
       brew install gcc
     fi
+
+    # mariadb needs openssl >= 1.0.0
+    if [[ ! -e /usr/local/opt/openssl/lib/pkgconfig ]]; then
+      echo "openssl is required but missing"
+      brew install openssl
+    fi
+    export DYLD_LIBRARY_PATH=/usr/local/Cellar/openssl/1.0.2n/lib
+    export LSST_LIBRARY_PATH=$DYLD_LIBRARY_PATH
+    export PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig${PKG_CONFIG_PATH:+:${PKG_CONFIG_PATH}}
     ;;
 esac
 
